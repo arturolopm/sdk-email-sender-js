@@ -14,12 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const users_1 = __importDefault(require("../routes/users"));
+const licenses_1 = __importDefault(require("../routes/licenses"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {
     constructor() {
         this.apiPath = {
-            users: '/api/users'
+            users: '/api/users',
+            licenses: '/api/licenses'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8080';
@@ -32,7 +34,9 @@ class Server {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield connection_1.default.authenticate();
-                console.log('connected to database');
+                yield connection_1.default.sync();
+                const dbName = connection_1.default.getDatabaseName();
+                console.log(`connected to database ${dbName}`);
             }
             catch (error) {
                 throw new Error(error);
@@ -49,6 +53,7 @@ class Server {
     }
     routes() {
         this.app.use(this.apiPath.users, users_1.default);
+        this.app.use(this.apiPath.licenses, licenses_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

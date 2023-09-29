@@ -1,37 +1,76 @@
 import { Request, Response } from 'express'
+import User from '../models/user'
 
-export const getAllUsers = (req: Request, res: Response) => {
-  res.json({
-    msg: 'getUsers'
-  })
+export const getAllUsers = async (req: Request, res: Response) => {
+  const responseItem = await User.findAll()
+  res.json(responseItem)
 }
 
-export const getOneUser = (req: Request, res: Response) => {
+export const getOneUser = async (req: Request, res: Response) => {
   const { id } = req.params
-  res.json({
-    msg: 'getOneUser',
-    id
-  })
+  const responseItem = await User.findByPk(id)
+  if (responseItem) {
+    res.json(responseItem)
+  } else {
+    res.status(404).json({
+      message: 'User not found'
+    })
+  }
 }
 
-export const createUser = (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response) => {
   const { body } = req
-  res.json({
-    msg: 'createUser',
-    body
-  })
+  try {
+    const alreadyExist = await User.findOne({
+      where: {
+        email: body.email
+      }
+    })
+    if (alreadyExist) {
+      return res.status(400).json({
+        message: 'User already exists'
+      })
+    }
+    const user = await User.create(body)
+    await user.save()
+    res.status(200).json({
+      message: 'User created successfully',
+      user
+    })
+  } catch (error) {
+    console.log(error)
+
+    res.status(500).json({
+      message: 'Error creating user'
+    })
+  }
 }
 export const deleteUser = (req: Request, res: Response) => {
   const { id } = req.params
   res.json({
-    msg: 'deleteUser',
+    msg: 'deleteUser pending route',
     id
   })
 }
-export const editUser = (req: Request, res: Response) => {
+export const editUser = async (req: Request, res: Response) => {
   const { id } = req.params
-  res.json({
-    msg: 'editUser',
-    id
-  })
+  const { body } = req
+  try {
+    const user = await User.findByPk(id)
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      })
+    } else {
+      await user.update(body)
+      res.status(200).json({
+        message: 'User updated',
+        user
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error updating user'
+    })
+  }
 }

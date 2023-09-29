@@ -1,5 +1,6 @@
 import express, { Application } from 'express'
 import userRoutes from '../routes/users'
+import licenseRoutes from '../routes/licenses'
 import cors from 'cors'
 import db from '../db/connection'
 
@@ -7,7 +8,8 @@ class Server {
   private app: Application
   private port: string
   private apiPath = {
-    users: '/api/users'
+    users: '/api/users',
+    licenses: '/api/licenses'
   }
   constructor() {
     this.app = express()
@@ -21,7 +23,10 @@ class Server {
   async dbConnection() {
     try {
       await db.authenticate()
-      console.log('connected to database')
+      await db.sync()
+      const dbName = db.getDatabaseName()
+
+      console.log(`connected to database ${dbName}`)
     } catch (error) {
       throw new Error(error as string)
     }
@@ -39,6 +44,7 @@ class Server {
 
   routes() {
     this.app.use(this.apiPath.users, userRoutes)
+    this.app.use(this.apiPath.licenses, licenseRoutes)
   }
   listen() {
     this.app.listen(this.port, () => {

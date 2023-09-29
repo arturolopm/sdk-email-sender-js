@@ -11,6 +11,23 @@ const User = connection_1.default.define('User', {
     },
     email: {
         type: sequelize_1.DataTypes.STRING
+    },
+    isStaff: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    poc_contact_name: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    poc_contact_email: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    admin_poc: {
+        type: sequelize_1.DataTypes.INTEGER,
+        references: {
+            model: 'User',
+            key: 'id'
+        }
     }
 });
 exports.default = User;

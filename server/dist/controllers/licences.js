@@ -12,16 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editUser = exports.deleteUser = exports.createUser = exports.getOneUser = exports.getAllUsers = void 0;
+exports.editLicense = exports.deleteLicense = exports.createLicense = exports.getOneLicense = exports.getAllLicenses = void 0;
+const license_1 = __importDefault(require("./../models/license"));
 const user_1 = __importDefault(require("../models/user"));
-const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const responseItem = yield user_1.default.findAll();
+const getAllLicenses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const responseItem = yield license_1.default.findAll();
     res.json(responseItem);
 });
-exports.getAllUsers = getAllUsers;
-const getOneUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAllLicenses = getAllLicenses;
+const getOneLicense = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const responseItem = yield user_1.default.findByPk(id);
+    const responseItem = yield license_1.default.findByPk(id);
     if (responseItem) {
         res.json(responseItem);
     }
@@ -31,66 +32,62 @@ const getOneUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
-exports.getOneUser = getOneUser;
-const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getOneLicense = getOneLicense;
+const createLicense = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    try {
-        const alreadyExist = yield user_1.default.findOne({
-            where: {
-                email: body.email
-            }
+    const users = yield user_1.default.findAll();
+    if (!users) {
+        return res.status(400).json({
+            message: 'can not create licenses without any user previously created'
         });
-        if (alreadyExist) {
-            return res.status(400).json({
-                message: 'User already exists'
-            });
-        }
-        const user = yield user_1.default.create(body);
-        yield user.save();
+    }
+    try {
+        const license = yield license_1.default.create(body);
+        yield license.save();
         res.status(200).json({
-            message: 'User created successfully',
-            user
+            message: 'License created successfully',
+            license
         });
     }
     catch (error) {
         console.log(error);
         res.status(500).json({
-            message: 'Error creating user'
+            message: error
         });
     }
 });
-exports.createUser = createUser;
-const deleteUser = (req, res) => {
+exports.createLicense = createLicense;
+const deleteLicense = (req, res) => {
     const { id } = req.params;
     res.json({
-        msg: 'deleteUser pending route',
+        msg: 'deleteLicense pending route',
         id
     });
 };
-exports.deleteUser = deleteUser;
-const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.deleteLicense = deleteLicense;
+const editLicense = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { body } = req;
     try {
-        const user = yield user_1.default.findByPk(id);
-        if (!user) {
+        const license = yield license_1.default.findByPk(id);
+        if (!license) {
             return res.status(404).json({
-                message: 'User not found'
+                message: 'license not found'
             });
         }
         else {
-            yield user.update(body);
+            yield license.update(body);
             res.status(200).json({
-                message: 'User updated',
-                user
+                message: 'license updated',
+                license
             });
         }
     }
     catch (error) {
         res.status(500).json({
-            message: 'Error updating user'
+            message: error
         });
     }
 });
-exports.editUser = editUser;
-//# sourceMappingURL=users.js.map
+exports.editLicense = editLicense;
+//# sourceMappingURL=licences.js.map
