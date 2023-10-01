@@ -1,7 +1,9 @@
 import { Request, Response } from 'express'
 import License from './../models/license'
-import { getAllUsers } from './users'
 import User from '../models/user'
+import { addMonths, addWeeks, isDay } from '../utils/utils'
+import Client from '../models/client'
+import { ClientAttributes, LicenseAttributes } from '../types/types'
 
 export const getAllLicenses = async (req: Request, res: Response) => {
   const responseItem = await License.findAll()
@@ -70,5 +72,101 @@ export const editLicense = async (req: Request, res: Response) => {
     res.status(500).json({
       message: error
     })
+  }
+}
+
+export const sendEmailFourthMonthsLicense = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const fourMonthsLater = addMonths(new Date(), 4)
+    const formattedFourMonthsLater = fourMonthsLater.toISOString().slice(0, 10)
+
+    const licenses = await License.findAll({
+      where: {
+        expiration_datetime: formattedFourMonthsLater
+      }
+    })
+    const promises = licenses.map(async (licence) => {
+      const licenseData = licence.get() as LicenseAttributes
+      const client = await Client.findByPk(licenseData.client_id)
+      const clientData = client?.get() as ClientAttributes
+      const admin_poc = await User.findByPk(clientData.admin_poc!)
+      const adminData = admin_poc?.get()
+
+      return { licenseData, clientData, adminData }
+    })
+
+    const responseItem = await Promise.all(promises)
+    return res.json({ responseItem })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ error: error })
+  }
+}
+
+export const sendEmailOnehMonthLicenseAndIsMonday = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const oneMonthLater = addMonths(new Date(), 1)
+    const formattedOneMonthsLater = oneMonthLater.toISOString().slice(0, 10)
+    const isMonday = isDay(new Date(), 1)
+    if (!isMonday) {
+      return res.status(404).json({
+        message: 'Today is not a Monday, emails not sent'
+      })
+    }
+
+    const licenses = await License.findAll({
+      where: {
+        expiration_datetime: formattedOneMonthsLater
+      }
+    })
+    const promises = licenses.map(async (licence) => {
+      const licenseData = licence.get() as LicenseAttributes
+      const client = await Client.findByPk(licenseData.client_id)
+      const clientData = client?.get() as ClientAttributes
+      const admin_poc = await User.findByPk(clientData.admin_poc!)
+      const adminData = admin_poc?.get()
+
+      return { licenseData, clientData, adminData }
+    })
+
+    const responseItem = await Promise.all(promises)
+    return res.json({ responseItem })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ error: error })
+  }
+}
+
+export const sendEmailOneWeekLicense = async (req: Request, res: Response) => {
+  try {
+    const oneWeekLater = addWeeks(new Date(), 1)
+    const formattedOneWeekLater = oneWeekLater.toISOString().slice(0, 10)
+
+    const licenses = await License.findAll({
+      where: {
+        expiration_datetime: formattedOneWeekLater
+      }
+    })
+    const promises = licenses.map(async (licence) => {
+      const licenseData = licence.get() as LicenseAttributes
+      const client = await Client.findByPk(licenseData.client_id)
+      const clientData = client?.get() as ClientAttributes
+      const admin_poc = await User.findByPk(clientData.admin_poc!)
+      const adminData = admin_poc?.get()
+
+      return { licenseData, clientData, adminData }
+    })
+
+    const responseItem = await Promise.all(promises)
+    return res.json({ responseItem })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ error: error })
   }
 }
