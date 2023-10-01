@@ -31,6 +31,7 @@ export const createUser = async (req: Request, res: Response) => {
         message: 'User already exists'
       })
     }
+
     const user = await User.create(body)
     await user.save()
     res.status(200).json({

@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize'
 import db from '../db/connection'
-import User from './user'
+import Client from './client'
 
 const License = db.define('License', {
   package: {
@@ -18,11 +18,11 @@ const License = db.define('License', {
     }
   },
 
-  user_id: {
+  client_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: User, // Reference the User model
+      model: Client, // Reference the Client model
       key: 'id'
     }
   },
@@ -37,8 +37,8 @@ const License = db.define('License', {
     defaultValue: () => new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) // 90 days in milliseconds
   }
 })
-License.belongsTo(User, {
-  foreignKey: 'user_id',
+License.belongsTo(Client, {
+  foreignKey: 'client_id',
   onDelete: 'CASCADE'
 })
 export default License

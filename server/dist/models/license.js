@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
-const user_1 = __importDefault(require("./user"));
+const client_1 = __importDefault(require("./client"));
 const License = connection_1.default.define('License', {
     package: {
         type: sequelize_1.DataTypes.STRING,
@@ -21,11 +21,11 @@ const License = connection_1.default.define('License', {
             isIn: [['production', 'evaluation']]
         }
     },
-    user_id: {
+    client_id: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: user_1.default,
+            model: client_1.default,
             key: 'id'
         }
     },
@@ -40,8 +40,8 @@ const License = connection_1.default.define('License', {
         defaultValue: () => new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) // 90 days in milliseconds
     }
 });
-License.belongsTo(user_1.default, {
-    foreignKey: 'user_id',
+License.belongsTo(client_1.default, {
+    foreignKey: 'client_id',
     onDelete: 'CASCADE'
 });
 exports.default = License;

@@ -1,6 +1,7 @@
 import express, { Application } from 'express'
 import userRoutes from '../routes/users'
 import licenseRoutes from '../routes/licenses'
+import clientRoutes from '../routes/clients'
 import cors from 'cors'
 import db from '../db/connection'
 
@@ -9,7 +10,8 @@ class Server {
   private port: string
   private apiPath = {
     users: '/api/users',
-    licenses: '/api/licenses'
+    licenses: '/api/licenses',
+    clients: '/api/clients'
   }
   constructor() {
     this.app = express()
@@ -45,6 +47,7 @@ class Server {
   routes() {
     this.app.use(this.apiPath.users, userRoutes)
     this.app.use(this.apiPath.licenses, licenseRoutes)
+    this.app.use(this.apiPath.clients, clientRoutes)
   }
   listen() {
     this.app.listen(this.port, () => {

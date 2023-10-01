@@ -15,13 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const users_1 = __importDefault(require("../routes/users"));
 const licenses_1 = __importDefault(require("../routes/licenses"));
+const clients_1 = __importDefault(require("../routes/clients"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {
     constructor() {
         this.apiPath = {
             users: '/api/users',
-            licenses: '/api/licenses'
+            licenses: '/api/licenses',
+            clients: '/api/clients'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8080';
@@ -54,6 +56,7 @@ class Server {
     routes() {
         this.app.use(this.apiPath.users, users_1.default);
         this.app.use(this.apiPath.licenses, licenses_1.default);
+        this.app.use(this.apiPath.clients, clients_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {
