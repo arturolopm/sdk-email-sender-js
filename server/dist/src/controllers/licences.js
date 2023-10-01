@@ -13,9 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendAllEmails = exports.sendEmailOneWeekLicense = exports.sendEmailOnehMonthLicenseAndIsMonday = exports.sendEmailFourthMonthsLicense = exports.editLicense = exports.deleteLicense = exports.createLicense = exports.getOneLicense = exports.getAllLicenses = void 0;
-const license_1 = __importDefault(require("../src/models/license"));
-const user_1 = __importDefault(require("../src/models/user"));
+const license_1 = __importDefault(require("../models/license"));
+const user_1 = __importDefault(require("../models/user"));
 const utils_1 = require("../utils/utils");
+const emailTemplate_1 = require("../templates/emailTemplate");
 const getAllLicenses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const responseItem = yield license_1.default.findAll();
     res.json(responseItem);
@@ -93,7 +94,24 @@ const editLicense = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.editLicense = editLicense;
 const sendEmailFourthMonthsLicense = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const responseItem = yield (0, utils_1.getDataSendEmailsFourMonths)();
+        const responseItem = (yield (0, utils_1.getDataSendEmailsFourMonths)());
+        const templates = responseItem.map((data) => {
+            const mail = (0, emailTemplate_1.emailTemplate)({
+                license_id: data.licenseData.id,
+                license_type: data.licenseData.license_type,
+                package: data.licenseData.package,
+                expiration_datetime: data.licenseData.expiration_datetime,
+                poc_name: data.clientData.poc_name,
+                poc_email: data.clientData.poc_email
+            });
+            return { data, mail };
+        });
+        templates.map((template) => {
+            (0, utils_1.sendMail)({
+                to: template.data.adminData.email_address,
+                template: template.mail
+            });
+        });
         res.status(200).json({ responseItem });
     }
     catch (error) {
@@ -103,7 +121,29 @@ const sendEmailFourthMonthsLicense = (req, res) => __awaiter(void 0, void 0, voi
 exports.sendEmailFourthMonthsLicense = sendEmailFourthMonthsLicense;
 const sendEmailOnehMonthLicenseAndIsMonday = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const responseItem = yield (0, utils_1.getDataLicensesOneMonthAndIsMonday)();
+        const isMonday = (0, utils_1.isDay)(new Date(), 1);
+        const responseItem = isMonday
+            ? (yield (0, utils_1.getDataLicensesOneMonthAndIsMonday)())
+            : [];
+        if (responseItem.length > 0) {
+            const templates = responseItem.map((data) => {
+                const mail = (0, emailTemplate_1.emailTemplate)({
+                    license_id: data.licenseData.id,
+                    license_type: data.licenseData.license_type,
+                    package: data.licenseData.package,
+                    expiration_datetime: data.licenseData.expiration_datetime,
+                    poc_name: data.clientData.poc_name,
+                    poc_email: data.clientData.poc_email
+                });
+                return { data, mail };
+            });
+            templates.map((template) => {
+                (0, utils_1.sendMail)({
+                    to: template.data.adminData.email_address,
+                    template: template.mail
+                });
+            });
+        }
         res.status(200).json({ responseItem });
     }
     catch (error) {
@@ -113,7 +153,26 @@ const sendEmailOnehMonthLicenseAndIsMonday = (req, res) => __awaiter(void 0, voi
 exports.sendEmailOnehMonthLicenseAndIsMonday = sendEmailOnehMonthLicenseAndIsMonday;
 const sendEmailOneWeekLicense = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const responseItem = yield (0, utils_1.getDataLicensesOneWeek)();
+        const responseItem = (yield (0, utils_1.getDataLicensesOneWeek)());
+        if (responseItem.length > 0) {
+            const templates = responseItem.map((data) => {
+                const mail = (0, emailTemplate_1.emailTemplate)({
+                    license_id: data.licenseData.id,
+                    license_type: data.licenseData.license_type,
+                    package: data.licenseData.package,
+                    expiration_datetime: data.licenseData.expiration_datetime,
+                    poc_name: data.clientData.poc_name,
+                    poc_email: data.clientData.poc_email
+                });
+                return { data, mail };
+            });
+            templates.map((template) => {
+                (0, utils_1.sendMail)({
+                    to: template.data.adminData.email_address,
+                    template: template.mail
+                });
+            });
+        }
         res.status(200).json({ responseItem });
     }
     catch (error) {
@@ -123,10 +182,30 @@ const sendEmailOneWeekLicense = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.sendEmailOneWeekLicense = sendEmailOneWeekLicense;
 const sendAllEmails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const fourMonths = yield (0, utils_1.getDataSendEmailsFourMonths)();
-        const oneMonth = yield (0, utils_1.getDataLicensesOneMonthAndIsMonday)();
-        const oneWeek = yield (0, utils_1.getDataLicensesOneWeek)();
-        res.status(200).json({ fourMonths, oneMonth, oneWeek });
+        const fourMonths = (yield (0, utils_1.getDataSendEmailsFourMonths)());
+        const oneMonth = (yield (0, utils_1.getDataLicensesOneMonthAndIsMonday)());
+        const oneWeek = (yield (0, utils_1.getDataLicensesOneWeek)());
+        const responseItem = fourMonths.concat(oneMonth, oneWeek);
+        if (responseItem.length > 0) {
+            const templates = responseItem.map((data) => {
+                const mail = (0, emailTemplate_1.emailTemplate)({
+                    license_id: data.licenseData.id,
+                    license_type: data.licenseData.license_type,
+                    package: data.licenseData.package,
+                    expiration_datetime: data.licenseData.expiration_datetime,
+                    poc_name: data.clientData.poc_name,
+                    poc_email: data.clientData.poc_email
+                });
+                return { data, mail };
+            });
+            templates.map((template) => {
+                (0, utils_1.sendMail)({
+                    to: template.data.adminData.email_address,
+                    template: template.mail
+                });
+            });
+        }
+        res.status(200).json({ responseItem });
     }
     catch (error) {
         res.status(500).json({ error });

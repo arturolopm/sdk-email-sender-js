@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const users_1 = __importDefault(require("../src/routes/users"));
-const licenses_1 = __importDefault(require("../src/routes/licenses"));
-const clients_1 = __importDefault(require("../src/routes/clients"));
+const users_1 = __importDefault(require("../routes/users"));
+const licenses_1 = __importDefault(require("../routes/licenses"));
+const clients_1 = __importDefault(require("../routes/clients"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {

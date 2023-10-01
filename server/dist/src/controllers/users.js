@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.editUser = exports.deleteUser = exports.createUser = exports.getOneUser = exports.getAllUsers = void 0;
-const user_1 = __importDefault(require("../src/models/user"));
+const user_1 = __importDefault(require("../models/user"));
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const responseItem = yield user_1.default.findAll();
     res.json(responseItem);
@@ -37,7 +37,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const alreadyExist = yield user_1.default.findOne({
             where: {
-                email: body.email
+                email_address: body.email_address
             }
         });
         if (alreadyExist) {
@@ -55,7 +55,8 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (error) {
         console.log(error);
         res.status(500).json({
-            message: 'Error creating user'
+            message: 'Error creating user',
+            error: error
         });
     }
 });

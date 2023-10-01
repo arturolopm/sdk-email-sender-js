@@ -12,11 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDataLicensesOneWeek = exports.getDataLicensesOneMonthAndIsMonday = exports.getDataSendEmailsFourMonths = exports.isDay = exports.addWeeks = exports.addMonths = void 0;
+exports.sendMail = exports.getDataLicensesOneWeek = exports.getDataLicensesOneMonthAndIsMonday = exports.getDataSendEmailsFourMonths = exports.isDay = exports.addWeeks = exports.addMonths = void 0;
 const transporter_1 = require("../config/transporter");
-const license_1 = __importDefault(require("../src/models/license"));
-const client_1 = __importDefault(require("../src/models/client"));
-const user_1 = __importDefault(require("../src/models/user"));
+const license_1 = __importDefault(require("../models/license"));
+const client_1 = __importDefault(require("../models/client"));
+const user_1 = __importDefault(require("../models/user"));
 const addMonths = (date, months) => {
     date.setMonth(date.getMonth() + months);
     return date;
@@ -63,12 +63,6 @@ const getDataLicensesOneMonthAndIsMonday = () => __awaiter(void 0, void 0, void 
     try {
         const oneMonthLater = (0, exports.addMonths)(new Date(), 1);
         const formattedOneMonthsLater = oneMonthLater.toISOString().slice(0, 10);
-        const isMonday = (0, exports.isDay)(new Date(), 1);
-        if (!isMonday) {
-            return {
-                message: 'Today is not a Monday, emails not sent'
-            };
-        }
         const licenses = yield license_1.default.findAll({
             where: {
                 expiration_datetime: formattedOneMonthsLater
@@ -126,9 +120,11 @@ const sendMail = ({ to, template }) => __awaiter(void 0, void 0, void 0, functio
             // text:"hello there",
             html: template
         });
+        return { sent: to };
     }
     catch (error) {
         console.log(error);
     }
 });
+exports.sendMail = sendMail;
 //# sourceMappingURL=utils.js.map
