@@ -1,4 +1,4 @@
-import { transporter } from '../config/transporter'
+import { transporter } from '../../config/transporter'
 import License from '../models/license'
 import { ClientAttributes, LicenseAttributes } from '../types/types'
 import Client from '../models/client'

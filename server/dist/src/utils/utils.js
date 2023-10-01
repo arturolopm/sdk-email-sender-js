@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendMail = exports.getDataLicensesOneWeek = exports.getDataLicensesOneMonthAndIsMonday = exports.getDataSendEmailsFourMonths = exports.isDay = exports.addWeeks = exports.addMonths = void 0;
-const transporter_1 = require("../config/transporter");
+const transporter_1 = require("../../config/transporter");
 const license_1 = __importDefault(require("../models/license"));
 const client_1 = __importDefault(require("../models/client"));
 const user_1 = __importDefault(require("../models/user"));
