@@ -1,4 +1,4 @@
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <header className='bg-gray-100 py-6'>
       <div className='max-w-4xl mx-auto text-center'>

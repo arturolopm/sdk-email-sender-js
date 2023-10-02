@@ -8,13 +8,15 @@ import {
   sendAllEmails,
   sendEmailFourthMonthsLicense,
   sendEmailOnehMonthLicenseAndIsMonday,
-  sendEmailOneWeekLicense
+  sendEmailOneWeekLicense,
+  getLastEmailsSent
 } from '../controllers/licences'
 
 const router = Router()
 
 router.get('/', getAllLicenses)
 router.get('/:id', getOneLicense)
+router.get('/last-emails/:lastx', getLastEmailsSent)
 router.post('/send-email/four-months', sendEmailFourthMonthsLicense)
 router.post('/send-email/one-month', sendEmailOnehMonthLicenseAndIsMonday)
 router.post('/send-email/one-week', sendEmailOneWeekLicense)

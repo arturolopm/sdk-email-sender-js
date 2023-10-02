@@ -7,7 +7,8 @@ const Client = db.define('Client', {
     type: DataTypes.STRING
   },
   poc_email: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    unique: true
   },
   admin_poc: {
     type: DataTypes.INTEGER,

@@ -5,6 +5,7 @@ const licences_1 = require("../controllers/licences");
 const router = (0, express_1.Router)();
 router.get('/', licences_1.getAllLicenses);
 router.get('/:id', licences_1.getOneLicense);
+router.get('/last-emails/:lastx', licences_1.getLastEmailsSent);
 router.post('/send-email/four-months', licences_1.sendEmailFourthMonthsLicense);
 router.post('/send-email/one-month', licences_1.sendEmailOnehMonthLicenseAndIsMonday);
 router.post('/send-email/one-week', licences_1.sendEmailOneWeekLicense);

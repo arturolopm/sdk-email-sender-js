@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendAllEmails = exports.sendEmailOneWeekLicense = exports.sendEmailOnehMonthLicenseAndIsMonday = exports.sendEmailFourthMonthsLicense = exports.editLicense = exports.deleteLicense = exports.createLicense = exports.getOneLicense = exports.getAllLicenses = void 0;
+exports.getLastEmailsSent = exports.sendAllEmails = exports.sendEmailOneWeekLicense = exports.sendEmailOnehMonthLicenseAndIsMonday = exports.sendEmailFourthMonthsLicense = exports.editLicense = exports.deleteLicense = exports.createLicense = exports.getOneLicense = exports.getAllLicenses = void 0;
 const license_1 = __importDefault(require("../models/license"));
 const user_1 = __importDefault(require("../models/user"));
 const utils_1 = require("../utils/utils");
@@ -217,4 +217,20 @@ const sendAllEmails = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.sendAllEmails = sendAllEmails;
+const getLastEmailsSent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { lastx } = req.params; // Assuming X is obtained from the request parameters
+        // Find the last X email sent records
+        const lastXEmailsSent = yield emailSent_1.default.findAll({
+            order: [['sent_at', 'DESC']],
+            limit: parseInt(lastx) // Convert X to an integer to use as the limit
+        });
+        res.status(200).json(lastXEmailsSent);
+    }
+    catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+exports.getLastEmailsSent = getLastEmailsSent;
 //# sourceMappingURL=licences.js.map

@@ -13,7 +13,7 @@ const cards = [
     },
     emails_sent: {
       name: 'Emails sent',
-      role: 'Co-Founder / CTO',
+      role: '4 months',
       href: '#'
     }
   },
@@ -30,7 +30,7 @@ const cards = [
     },
     emails_sent: {
       name: 'Emails sent',
-      role: 'Co-Founder / CTO',
+      role: '1 month',
       href: '#'
     }
   },
@@ -47,7 +47,7 @@ const cards = [
     },
     emails_sent: {
       name: 'Emails sent',
-      role: 'Co-Founder / CTO',
+      role: '1 month',
       href: '#'
     }
   },
@@ -64,14 +64,14 @@ const cards = [
     },
     emails_sent: {
       name: 'Emails sent',
-      role: 'Co-Founder / CTO',
+      role: 'all emails',
       href: '#'
     }
   }
   // More posts...
 ]
 
-const EmailSender = () => {
+const EmailSender: React.FC = () => {
   return (
     <div className='bg-white pt-4'>
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
@@ -84,7 +84,7 @@ const EmailSender = () => {
             could expire soon.
           </p>
         </div>
-        <div className='mx-auto mt-4 grid max-w-2xl grid-cols-1 gap-x-4  border-t border-gray-200    lg:mx-0 lg:max-w-none lg:grid-cols-4'>
+        <div className='mx-auto mt-4 grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-4  border-t border-gray-200    lg:mx-0 lg:max-w-none lg:grid-cols-4'>
           {cards.map((card) => (
             <Card card={card} />
           ))}

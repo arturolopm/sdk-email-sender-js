@@ -43,6 +43,12 @@ exports.getOneClient = getOneClient;
 const createClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     try {
+        const alreadyExists = yield client_1.default.findOne({
+            where: { poc_email: body.poc_email }
+        });
+        if (alreadyExists) {
+            return res.status(400).json({ message: 'Client already exist' });
+        }
         const client = yield client_1.default.create(body);
         yield client.save();
         res.status(200).json({ message: 'Client created successfully', client });

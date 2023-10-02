@@ -11,7 +11,8 @@ const Client = connection_1.default.define('Client', {
         type: sequelize_1.DataTypes.STRING
     },
     poc_email: {
-        type: sequelize_1.DataTypes.STRING
+        type: sequelize_1.DataTypes.STRING,
+        unique: true
     },
     admin_poc: {
         type: sequelize_1.DataTypes.INTEGER,
