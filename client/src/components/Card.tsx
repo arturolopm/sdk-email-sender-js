@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios'
 import { useState } from 'react'
-import { useFetch } from 'usehooks-ts'
 interface CardProps {
   id: number
   title: string
