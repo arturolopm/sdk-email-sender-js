@@ -6,6 +6,7 @@ const dbUser = process.env.DB_USER || 'root';
 const dbPass = process.env.DB_PASS || 'root';
 const db = new sequelize_1.Sequelize(dbname, dbUser, dbPass, {
     host: 'localhost',
+    port: 3306,
     dialect: 'mariadb'
 });
 exports.default = db;

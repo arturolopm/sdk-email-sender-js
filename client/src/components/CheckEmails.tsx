@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
+import { BASE_URL } from '../constants/constants'
 
 interface EmailData {
   license_id: number
@@ -16,7 +17,7 @@ const CheckEmails: React.FC = () => {
   const actionEmail = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/licenses/last-emails/${emailCount}`
+        `${BASE_URL}/api/licenses/last-emails/${emailCount}`
       )
       setData(response.data)
     } catch (error) {

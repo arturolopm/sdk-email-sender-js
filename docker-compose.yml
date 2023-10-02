@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mydb
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    ports:
+      - 3306:3306
+
+    networks:
+      - myapp-network
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - '8080:8080'
+    expose:
+      - 8080
+    depends_on:
+      - mariadb
+
+    networks:
+      - myapp-network
+
+networks:
+  myapp-network:
+    driver: bridge
+
+volumes:
+  mariadb_data:
