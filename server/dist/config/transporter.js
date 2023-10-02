@@ -10,8 +10,8 @@ exports.transporter = nodemailer_1.default.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: process.env.EMAIL_SENDER || 'carturolopezm@gmail.com',
-        pass: process.env.EMAIL_PW || 'ypks klpo ukso qafp'
+        user: process.env.EMAIL_SENDER || 'afinichallenge@gmail.com',
+        pass: process.env.EMAIL_PW || 'enwb nekx owix vxsw'
     }
 });
 exports.transporter.verify().then(() => {

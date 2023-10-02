@@ -114,7 +114,7 @@ exports.getDataLicensesOneWeek = getDataLicensesOneWeek;
 const sendMail = ({ to, template }) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield transporter_1.transporter.sendMail({
-            from: process.env.EMAIL_SENDER,
+            from: process.env.EMAIL_SENDER || 'afinichallenge@gmail.com',
             to: to,
             subject: 'License about to expire',
             // text:"hello there",
