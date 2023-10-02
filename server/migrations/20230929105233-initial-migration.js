@@ -106,6 +106,37 @@ module.exports = {
         allowNull: false
       }
     })
+    await queryInterface.createTable('EmailSent', {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      license_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Licenses',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      sent_at: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      }
+    })
     // Function to read and insert data from CSV file
     const insertFromCSV = async (tableName, fileName, columnMappings) => {
       const filePath = path.join(__dirname, '../seeders', fileName)

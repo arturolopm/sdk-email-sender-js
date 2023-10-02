@@ -12,6 +12,7 @@ import {
 import Client from '../models/client'
 import { ClientAttributes, LicenseAttributes } from '../types/types'
 import { emailTemplate } from '../templates/emailTemplate'
+import EmailSent from '../models/emailSent'
 
 export const getAllLicenses = async (req: Request, res: Response) => {
   const responseItem = await License.findAll()
@@ -162,13 +163,18 @@ export const sendEmailOneWeekLicense = async (req: Request, res: Response) => {
           poc_name: data.clientData.poc_name,
           poc_email: data.clientData.poc_email
         })
+
         return { data, mail }
       })
-      templates.map((template) => {
+      templates.map(async (template) => {
         sendMail({
           to: template.data.adminData.email_address,
           template: template.mail
         })
+        const email = await EmailSent.create({
+          license_id: template.data.licenseData.id
+        })
+        await email.save()
       })
     }
     res.status(200).json({ responseItem })

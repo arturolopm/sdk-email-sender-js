@@ -17,6 +17,7 @@ const license_1 = __importDefault(require("../models/license"));
 const user_1 = __importDefault(require("../models/user"));
 const utils_1 = require("../utils/utils");
 const emailTemplate_1 = require("../templates/emailTemplate");
+const emailSent_1 = __importDefault(require("../models/emailSent"));
 const getAllLicenses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const responseItem = yield license_1.default.findAll();
     res.json(responseItem);
@@ -166,12 +167,16 @@ const sendEmailOneWeekLicense = (req, res) => __awaiter(void 0, void 0, void 0, 
                 });
                 return { data, mail };
             });
-            templates.map((template) => {
+            templates.map((template) => __awaiter(void 0, void 0, void 0, function* () {
                 (0, utils_1.sendMail)({
                     to: template.data.adminData.email_address,
                     template: template.mail
                 });
-            });
+                const email = yield emailSent_1.default.create({
+                    license_id: template.data.licenseData.id
+                });
+                yield email.save();
+            }));
         }
         res.status(200).json({ responseItem });
     }
