@@ -33,6 +33,7 @@ const CheckEmails: React.FC = () => {
               Enter the number of emails to check:
             </label>
             <input
+              required
               className=' border border-gray-300'
               type='number'
               id='emailCount'

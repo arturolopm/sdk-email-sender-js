@@ -1,3 +1,4 @@
+import { BASE_URL } from '../constants/constants'
 import Card from './Card'
 
 const cards = [
@@ -9,7 +10,7 @@ const cards = [
       'Send email notification to the users who are point of contact of clients which licenses will expire in four months.',
     button: {
       title: 'Send now',
-      href: 'http://localhost:8080/api/licenses/send-email/four-months'
+      href: `${BASE_URL}/api/licenses/send-email/four-months`
     },
     emails_sent: {
       name: 'Emails sent',
@@ -26,7 +27,7 @@ const cards = [
 
     button: {
       title: 'Send now',
-      href: 'http://localhost:8080/api/licenses/send-email/one-month'
+      href: `${BASE_URL}/api/licenses/send-email/one-month`
     },
     emails_sent: {
       name: 'Emails sent',
@@ -43,7 +44,7 @@ const cards = [
 
     button: {
       title: 'Send now',
-      href: 'http://localhost:8080/api/licenses/send-email/one-week'
+      href: `${BASE_URL}/api/licenses/send-email/one-week`
     },
     emails_sent: {
       name: 'Emails sent',
@@ -60,7 +61,7 @@ const cards = [
 
     button: {
       title: 'Send now',
-      href: 'http://localhost:8080/api/licenses/send-email/all'
+      href: `${BASE_URL}/api/licenses/send-email/all`
     },
     emails_sent: {
       name: 'Emails sent',

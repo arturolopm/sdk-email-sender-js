@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const path_1 = __importDefault(require("path"));
 const express_1 = __importDefault(require("express"));
 const users_1 = __importDefault(require("../routes/users"));
 const licenses_1 = __importDefault(require("../routes/licenses"));
@@ -57,6 +58,9 @@ class Server {
         this.app.use(this.apiPath.users, users_1.default);
         this.app.use(this.apiPath.licenses, licenses_1.default);
         this.app.use(this.apiPath.clients, clients_1.default);
+        this.app.get('*', (req, res) => {
+            res.sendFile(path_1.default.resolve(__dirname, '../../public/index.html'));
+        });
     }
     listen() {
         this.app.listen(this.port, () => {
