@@ -12,7 +12,7 @@ import {
 import Client from '../models/client'
 import { ClientAttributes, LicenseAttributes } from '../types/types'
 import { emailTemplate } from '../templates/emailTemplate'
-import EmailSent from '../models/emailSent'
+import Email from '../models/email'
 
 export const getAllLicenses = async (req: Request, res: Response) => {
   const responseItem = await License.findAll()
@@ -171,7 +171,7 @@ export const sendEmailOneWeekLicense = async (req: Request, res: Response) => {
           to: template.data.adminData.email_address,
           template: template.mail
         })
-        const email = await EmailSent.create({
+        const email = await Email.create({
           license_id: template.data.licenseData.id
         })
         await email.save()
@@ -220,7 +220,7 @@ export const getLastEmailsSent = async (req: Request, res: Response) => {
     const { lastx } = req.params // Assuming X is obtained from the request parameters
 
     // Find the last X email sent records
-    const lastXEmailsSent = await EmailSent.findAll({
+    const lastXEmailsSent = await Email.findAll({
       order: [['sent_at', 'DESC']], // Order by sent_at in descending order to get the latest first
       limit: parseInt(lastx) // Convert X to an integer to use as the limit
     })

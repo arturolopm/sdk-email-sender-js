@@ -106,7 +106,7 @@ module.exports = {
         allowNull: false
       }
     })
-    await queryInterface.createTable('EmailSent', {
+    await queryInterface.createTable('Emails', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -201,5 +201,6 @@ module.exports = {
     await queryInterface.dropTable('Licenses')
     await queryInterface.dropTable('Clients')
     await queryInterface.dropTable('Users')
+    await queryInterface.dropTable('Emails')
   }
 }

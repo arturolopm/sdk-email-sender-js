@@ -8,7 +8,7 @@ WORKDIR /app
 # Copy the package.json files and install dependencies for both client and server
 COPY client/package*.json ./client/
 COPY server/package*.json ./server/
-RUN cd client && npm install && cd ../server && npm install && npm run migrate
+RUN cd client && npm install && cd ../server && npm install 
 
 # Copy the rest of the application code
 COPY . .

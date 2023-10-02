@@ -17,7 +17,7 @@ const license_1 = __importDefault(require("../models/license"));
 const user_1 = __importDefault(require("../models/user"));
 const utils_1 = require("../utils/utils");
 const emailTemplate_1 = require("../templates/emailTemplate");
-const emailSent_1 = __importDefault(require("../models/emailSent"));
+const email_1 = __importDefault(require("../models/email"));
 const getAllLicenses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const responseItem = yield license_1.default.findAll();
     res.json(responseItem);
@@ -172,7 +172,7 @@ const sendEmailOneWeekLicense = (req, res) => __awaiter(void 0, void 0, void 0, 
                     to: template.data.adminData.email_address,
                     template: template.mail
                 });
-                const email = yield emailSent_1.default.create({
+                const email = yield email_1.default.create({
                     license_id: template.data.licenseData.id
                 });
                 yield email.save();
@@ -221,7 +221,7 @@ const getLastEmailsSent = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         const { lastx } = req.params; // Assuming X is obtained from the request parameters
         // Find the last X email sent records
-        const lastXEmailsSent = yield emailSent_1.default.findAll({
+        const lastXEmailsSent = yield email_1.default.findAll({
             order: [['sent_at', 'DESC']],
             limit: parseInt(lastx) // Convert X to an integer to use as the limit
         });

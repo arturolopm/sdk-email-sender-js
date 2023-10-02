@@ -4,8 +4,8 @@ const sequelize_1 = require("sequelize");
 const dbname = process.env.DB_NAME || 'mydb';
 const dbUser = process.env.DB_USER || 'root';
 const dbPass = process.env.DB_PASS || 'root';
-const db = new sequelize_1.Sequelize(dbname, dbUser, dbPass, {
-    host: 'localhost',
+const db = new sequelize_1.Sequelize('mydb', 'root', 'root', {
+    host: 'mariadb',
     port: 3306,
     dialect: 'mariadb'
 });

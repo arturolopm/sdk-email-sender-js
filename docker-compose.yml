@@ -4,14 +4,15 @@ services:
   mariadb:
     image: mariadb:latest
     restart: always
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=mydb
       - MYSQL_USER=root
       - MYSQL_PASSWORD=root
-    ports:
-      - 3306:3306
-
     networks:
       - myapp-network
 

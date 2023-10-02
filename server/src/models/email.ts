@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 import db from '../db/connection'
 import License from './license'
 
-const EmailSent = db.define('EmailSent', {
+const Email = db.define('Email', {
   sent_at: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -10,7 +10,7 @@ const EmailSent = db.define('EmailSent', {
   }
 })
 
-EmailSent.belongsTo(License, {
+Email.belongsTo(License, {
   foreignKey: {
     name: 'license_id',
     allowNull: false
@@ -18,4 +18,4 @@ EmailSent.belongsTo(License, {
   onDelete: 'CASCADE'
 })
 
-export default EmailSent
+export default Email
