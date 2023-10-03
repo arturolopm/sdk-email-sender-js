@@ -5,6 +5,7 @@ import licenseRoutes from '../routes/licenses'
 import clientRoutes from '../routes/clients'
 import cors from 'cors'
 import db from '../db/connection'
+import migrateDatabase from '../db/migrate'
 
 class Server {
   private app: Application
@@ -30,6 +31,7 @@ class Server {
       const dbName = db.getDatabaseName()
 
       console.log(`connected to database ${dbName}`)
+      await migrateDatabase()
     } catch (error) {
       throw new Error(error as string)
     }

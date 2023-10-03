@@ -18,6 +18,7 @@ const licenses_1 = __importDefault(require("../routes/licenses"));
 const clients_1 = __importDefault(require("../routes/clients"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
+const migrate_1 = __importDefault(require("../db/migrate"));
 class Server {
     constructor() {
         this.apiPath = {
@@ -39,6 +40,7 @@ class Server {
                 yield connection_1.default.sync();
                 const dbName = connection_1.default.getDatabaseName();
                 console.log(`connected to database ${dbName}`);
+                yield (0, migrate_1.default)();
             }
             catch (error) {
                 throw new Error(error);

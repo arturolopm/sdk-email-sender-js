@@ -17,6 +17,8 @@ COPY . .
 WORKDIR /app/client
 RUN npm run build
 
+WORKDIR /app/server
+
 # Expose the server port
 EXPOSE 8080
 
