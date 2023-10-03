@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios'
 import { useState } from 'react'
 import { BASE_URL } from '../constants/constants'
@@ -14,13 +15,17 @@ const CheckEmails: React.FC = () => {
     setEmailCount(e.target.value)
   }
 
-  const actionEmail = async () => {
+  const actionEmail = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     try {
       const response = await axios.get(
         `${BASE_URL}/api/licenses/last-emails/${emailCount}`
       )
+      console.log('res', response)
+
       setData(response.data)
-    } catch (error) {
+    } catch (error: any) {
+      setData(error.message)
       console.error('Error:', error)
     }
   }
@@ -29,7 +34,9 @@ const CheckEmails: React.FC = () => {
     <div className='bg-white pt-4'>
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
         <div className='mx-auto max-w-2xl lg:mx-0'>
-          <div className='max-w-xl py-4 flex-col items-start justify-between px-2 shadow-md'>
+          <form
+            onSubmit={(e) => actionEmail(e)}
+            className='max-w-xl py-4 flex-col items-start justify-between px-2 shadow-md'>
             <label htmlFor='emailCount '>
               Enter the number of emails to check:
             </label>
@@ -43,7 +50,7 @@ const CheckEmails: React.FC = () => {
               onChange={(e) => handleChange(e)}
             />
             <button
-              onClick={actionEmail}
+              type='submit'
               className='rounded-full bg-black px-3 py-1.5 font-medium text-white'>
               Check Emails
             </button>
@@ -61,7 +68,7 @@ const CheckEmails: React.FC = () => {
                   </div>
                 ))}
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

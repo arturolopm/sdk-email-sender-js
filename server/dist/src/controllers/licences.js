@@ -107,12 +107,16 @@ const sendEmailFourthMonthsLicense = (req, res) => __awaiter(void 0, void 0, voi
             });
             return { data, mail };
         });
-        templates.map((template) => {
+        templates.map((template) => __awaiter(void 0, void 0, void 0, function* () {
             (0, utils_1.sendMail)({
                 to: template.data.adminData.email_address,
                 template: template.mail
             });
-        });
+            const email = yield email_1.default.create({
+                license_id: template.data.licenseData.id
+            });
+            yield email.save();
+        }));
         res.status(200).json({ responseItem });
     }
     catch (error) {
@@ -138,12 +142,16 @@ const sendEmailOnehMonthLicenseAndIsMonday = (req, res) => __awaiter(void 0, voi
                 });
                 return { data, mail };
             });
-            templates.map((template) => {
+            templates.map((template) => __awaiter(void 0, void 0, void 0, function* () {
                 (0, utils_1.sendMail)({
                     to: template.data.adminData.email_address,
                     template: template.mail
                 });
-            });
+                const email = yield email_1.default.create({
+                    license_id: template.data.licenseData.id
+                });
+                yield email.save();
+            }));
         }
         res.status(200).json({ responseItem });
     }
@@ -203,12 +211,16 @@ const sendAllEmails = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 });
                 return { data, mail };
             });
-            templates.map((template) => {
+            templates.map((template) => __awaiter(void 0, void 0, void 0, function* () {
                 (0, utils_1.sendMail)({
                     to: template.data.adminData.email_address,
                     template: template.mail
                 });
-            });
+                const email = yield email_1.default.create({
+                    license_id: template.data.licenseData.id
+                });
+                yield email.save();
+            }));
         }
         res.status(200).json({ responseItem });
     }

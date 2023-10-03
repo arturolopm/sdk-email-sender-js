@@ -102,11 +102,15 @@ export const sendEmailFourthMonthsLicense = async (
       })
       return { data, mail }
     })
-    templates.map((template) => {
+    templates.map(async (template) => {
       sendMail({
         to: template.data.adminData.email_address,
         template: template.mail
       })
+      const email = await Email.create({
+        license_id: template.data.licenseData.id
+      })
+      await email.save()
     })
     res.status(200).json({ responseItem })
   } catch (error) {
@@ -136,11 +140,15 @@ export const sendEmailOnehMonthLicenseAndIsMonday = async (
         })
         return { data, mail }
       })
-      templates.map((template) => {
+      templates.map(async (template) => {
         sendMail({
           to: template.data.adminData.email_address,
           template: template.mail
         })
+        const email = await Email.create({
+          license_id: template.data.licenseData.id
+        })
+        await email.save()
       })
     }
     res.status(200).json({ responseItem })
@@ -203,11 +211,15 @@ export const sendAllEmails = async (req: Request, res: Response) => {
         })
         return { data, mail }
       })
-      templates.map((template) => {
+      templates.map(async (template) => {
         sendMail({
           to: template.data.adminData.email_address,
           template: template.mail
         })
+        const email = await Email.create({
+          license_id: template.data.licenseData.id
+        })
+        await email.save()
       })
     }
     res.status(200).json({ responseItem })
