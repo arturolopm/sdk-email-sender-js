@@ -104,7 +104,7 @@ const swaggerDefinition = {
 };
 const swaggerOptions = {
     swaggerDefinition,
-    apis: ['../routes/*.ts']
+    apis: ['**/*.ts']
 };
 exports.default = (0, swagger_jsdoc_1.default)(swaggerOptions);
 //# sourceMappingURL=swagger.js.map
