@@ -27,11 +27,13 @@ export const getOneClient = async (req: Request, res: Response) => {
 export const createClient = async (req: Request, res: Response) => {
   const { body } = req
   try {
-    const alreadyExists = await Client.findOne({
+    const alreadyExists = (await Client.findOne({
       where: { poc_email: body.poc_email }
-    })
+    })) as any
     if (alreadyExists) {
-      return res.status(400).json({ message: 'Client already exist' })
+      return res
+        .status(400)
+        .json({ message: `Client already exist with id ${alreadyExists.id}` })
     }
     const client = await Client.create(body)
     await client.save()

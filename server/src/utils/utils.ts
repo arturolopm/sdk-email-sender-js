@@ -1,8 +1,11 @@
 import { transporter } from '../../config/transporter'
+import { Sequelize, Op } from 'sequelize'
 import License from '../models/license'
 import { ClientAttributes, LicenseAttributes } from '../types/types'
 import Client from '../models/client'
 import User from '../models/user'
+import dotenv from 'dotenv'
+dotenv.config({ path: '../../.env' })
 
 export const addMonths = (date: Date, months: number) => {
   date.setMonth(date.getMonth() + months)
@@ -26,7 +29,12 @@ export const getDataSendEmailsFourMonths = async () => {
 
     const licenses = await License.findAll({
       where: {
-        expiration_datetime: formattedFourMonthsLater
+        expiration_datetime: {
+          [Op.gte]: Sequelize.literal(`DATE('${formattedFourMonthsLater}')`),
+          [Op.lt]: Sequelize.literal(
+            `DATE('${formattedFourMonthsLater}') + INTERVAL 1 DAY`
+          )
+        }
       }
     })
     const promises = licenses.map(async (licence) => {
@@ -53,7 +61,12 @@ export const getDataLicensesOneMonthAndIsMonday = async () => {
 
     const licenses = await License.findAll({
       where: {
-        expiration_datetime: formattedOneMonthsLater
+        expiration_datetime: {
+          [Op.gte]: Sequelize.literal(`DATE('${formattedOneMonthsLater}')`),
+          [Op.lt]: Sequelize.literal(
+            `DATE('${formattedOneMonthsLater}') + INTERVAL 1 DAY`
+          )
+        }
       }
     })
     const promises = licenses.map(async (licence) => {
@@ -77,12 +90,20 @@ export const getDataLicensesOneWeek = async () => {
   try {
     const oneWeekLater = addWeeks(new Date(), 1)
     const formattedOneWeekLater = oneWeekLater.toISOString().slice(0, 10)
+    console.log(formattedOneWeekLater)
 
     const licenses = await License.findAll({
       where: {
-        expiration_datetime: formattedOneWeekLater
+        expiration_datetime: {
+          [Op.gte]: Sequelize.literal(`DATE('${formattedOneWeekLater}')`),
+          [Op.lt]: Sequelize.literal(
+            `DATE('${formattedOneWeekLater}') + INTERVAL 1 DAY`
+          )
+        }
       }
     })
+    console.log(licenses)
+
     const promises = licenses.map(async (licence) => {
       const licenseData = licence.get() as LicenseAttributes
       const client = await Client.findByPk(licenseData.client_id)

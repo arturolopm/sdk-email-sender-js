@@ -1,5 +1,6 @@
-import path from 'path'
 import express, { Application, Request, Response } from 'express'
+import swaggerUI from 'swagger-ui-express'
+import swaggerSetup from '../docs/swagger'
 import userRoutes from '../routes/users'
 import licenseRoutes from '../routes/licenses'
 import clientRoutes from '../routes/clients'
@@ -51,6 +52,7 @@ class Server {
     this.app.use(this.apiPath.users, userRoutes)
     this.app.use(this.apiPath.licenses, licenseRoutes)
     this.app.use(this.apiPath.clients, clientRoutes)
+    this.app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSetup))
     this.app.use('/*', express.static('public'))
   }
   listen() {

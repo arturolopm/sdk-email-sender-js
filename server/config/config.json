@@ -6,6 +6,7 @@
     "host": "mariadb",
     "dialect": "mariadb"
   },
+
   "test": {
     "username": "root",
     "password": "root",

@@ -93,11 +93,11 @@ const CreateUserForm: React.FC = () => {
               onChange={handleIsStaffChange}
             />
 
+            {responseMessage && <p>{responseMessage}</p>}
             <button className='rounded-full bg-black px-3 py-1.5 font-medium text-white'>
               Create User
             </button>
           </form>
-          {responseMessage && <p>{responseMessage}</p>}
         </div>
       </div>
     </div>

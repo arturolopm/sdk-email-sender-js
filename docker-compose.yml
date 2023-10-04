@@ -2,16 +2,16 @@ version: '3'
 
 services:
   mariadb:
-    image: mariadb:lts
+    image: mariadb:10.5
     restart: always
     ports:
       - '3306:3306'
     expose:
       - 3306
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mydb
-      MYSQL_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root
+      # MARIADB_DATABASE: mydb
+      MARIADB_PASSWORD: root
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:

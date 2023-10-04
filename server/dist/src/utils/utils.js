@@ -14,9 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendMail = exports.getDataLicensesOneWeek = exports.getDataLicensesOneMonthAndIsMonday = exports.getDataSendEmailsFourMonths = exports.isDay = exports.addWeeks = exports.addMonths = void 0;
 const transporter_1 = require("../../config/transporter");
+const sequelize_1 = require("sequelize");
 const license_1 = __importDefault(require("../models/license"));
 const client_1 = __importDefault(require("../models/client"));
 const user_1 = __importDefault(require("../models/user"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config({ path: '../../.env' });
 const addMonths = (date, months) => {
     date.setMonth(date.getMonth() + months);
     return date;
@@ -39,7 +42,10 @@ const getDataSendEmailsFourMonths = () => __awaiter(void 0, void 0, void 0, func
         const formattedFourMonthsLater = fourMonthsLater.toISOString().slice(0, 10);
         const licenses = yield license_1.default.findAll({
             where: {
-                expiration_datetime: formattedFourMonthsLater
+                expiration_datetime: {
+                    [sequelize_1.Op.gte]: sequelize_1.Sequelize.literal(`DATE('${formattedFourMonthsLater}')`),
+                    [sequelize_1.Op.lt]: sequelize_1.Sequelize.literal(`DATE('${formattedFourMonthsLater}') + INTERVAL 1 DAY`)
+                }
             }
         });
         const promises = licenses.map((licence) => __awaiter(void 0, void 0, void 0, function* () {
@@ -65,7 +71,10 @@ const getDataLicensesOneMonthAndIsMonday = () => __awaiter(void 0, void 0, void 
         const formattedOneMonthsLater = oneMonthLater.toISOString().slice(0, 10);
         const licenses = yield license_1.default.findAll({
             where: {
-                expiration_datetime: formattedOneMonthsLater
+                expiration_datetime: {
+                    [sequelize_1.Op.gte]: sequelize_1.Sequelize.literal(`DATE('${formattedOneMonthsLater}')`),
+                    [sequelize_1.Op.lt]: sequelize_1.Sequelize.literal(`DATE('${formattedOneMonthsLater}') + INTERVAL 1 DAY`)
+                }
             }
         });
         const promises = licenses.map((licence) => __awaiter(void 0, void 0, void 0, function* () {
@@ -89,11 +98,16 @@ const getDataLicensesOneWeek = () => __awaiter(void 0, void 0, void 0, function*
     try {
         const oneWeekLater = (0, exports.addWeeks)(new Date(), 1);
         const formattedOneWeekLater = oneWeekLater.toISOString().slice(0, 10);
+        console.log(formattedOneWeekLater);
         const licenses = yield license_1.default.findAll({
             where: {
-                expiration_datetime: formattedOneWeekLater
+                expiration_datetime: {
+                    [sequelize_1.Op.gte]: sequelize_1.Sequelize.literal(`DATE('${formattedOneWeekLater}')`),
+                    [sequelize_1.Op.lt]: sequelize_1.Sequelize.literal(`DATE('${formattedOneWeekLater}') + INTERVAL 1 DAY`)
+                }
             }
         });
+        console.log(licenses);
         const promises = licenses.map((licence) => __awaiter(void 0, void 0, void 0, function* () {
             const licenseData = licence.get();
             const client = yield client_1.default.findByPk(licenseData.client_id);

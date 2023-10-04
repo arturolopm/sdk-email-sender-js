@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import Server from './src/models/server'
-dotenv.config()
+dotenv.config({ path: './.env' })
+// console.log(process.env)
 
 const server = new Server()
 

@@ -17,8 +17,11 @@ interface CardProps {
 
 const Card: React.FC<{ card: CardProps }> = ({ card }) => {
   const [data, setData] = useState<any[]>([]) // eslint-disable-line @typescript-eslint/no-explicit-any
+
   const actionEmail = async () => {
     const response = await axios.post(card.button.href)
+    console.log(response)
+
     setData(response.data.responseItem)
   }
   return (

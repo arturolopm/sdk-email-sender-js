@@ -83,11 +83,11 @@ const CreateClientForm: React.FC = () => {
               onChange={handleAdminPocChange}
             />
 
+            {responseMessage && <p>{responseMessage}</p>}
             <button className='rounded-full bg-black px-3 py-1.5 font-medium text-white'>
               Create Client
             </button>
           </form>
-          {responseMessage && <p>{responseMessage}</p>}
         </div>
       </div>
     </div>

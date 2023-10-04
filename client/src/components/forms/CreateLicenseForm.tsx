@@ -7,6 +7,7 @@ const CreateLicenseForm: React.FC = () => {
   const [packageType, setPackageType] = useState('')
   const [licenseType, setLicenseType] = useState('')
   const [clientId, setClientId] = useState(0)
+  const [expDate, setExpDate] = useState('')
   const [responseMessage, setResponseMessage] = useState('')
 
   const handlePackageTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -19,6 +20,9 @@ const CreateLicenseForm: React.FC = () => {
 
   const handleClientIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setClientId(parseInt(e.target.value, 10))
+  }
+  const handleExpDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setExpDate(e.target.value)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,8 +39,10 @@ const CreateLicenseForm: React.FC = () => {
       const { data } = (await axios.post(`${BASE_URL}/api/licenses`, {
         package: packageType,
         license_type: licenseType,
-        client_id: clientId
+        client_id: clientId,
+        expiration_datetime: expDate
       })) as any
+      console.log(data)
 
       const message = data.message
       setResponseMessage(() => message)
@@ -88,12 +94,20 @@ const CreateLicenseForm: React.FC = () => {
               value={clientId}
               onChange={handleClientIdChange}
             />
+            <label htmlFor='expDate'>Expiration date:</label>
+            <input
+              className='border border-gray-300'
+              type='date'
+              id='expDate'
+              value={expDate}
+              onChange={handleExpDateChange}
+            />
 
+            {responseMessage && <p>{responseMessage}</p>}
             <button className='rounded-full bg-black px-3 py-1.5 font-medium text-white'>
               Create License
             </button>
           </form>
-          {responseMessage && <p>{responseMessage}</p>}
         </div>
       </div>
     </div>

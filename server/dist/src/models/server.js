@@ -13,6 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const swagger_1 = __importDefault(require("../docs/swagger"));
 const users_1 = __importDefault(require("../routes/users"));
 const licenses_1 = __importDefault(require("../routes/licenses"));
 const clients_1 = __importDefault(require("../routes/clients"));
@@ -59,6 +61,7 @@ class Server {
         this.app.use(this.apiPath.users, users_1.default);
         this.app.use(this.apiPath.licenses, licenses_1.default);
         this.app.use(this.apiPath.clients, clients_1.default);
+        this.app.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
         this.app.use('/*', express_1.default.static('public'));
     }
     listen() {
