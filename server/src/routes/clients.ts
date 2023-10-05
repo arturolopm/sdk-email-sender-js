@@ -31,6 +31,7 @@ const router = Router()
  *             schema:
  *               type: array
  *               items:
+ *                description:
  *                 $ref: '#/components/schemas/Client'
  */
 router.get('/', getAllClients)
@@ -79,6 +80,7 @@ router.get('/:id', getOneClient)
  *         content:
  *           application/json:
  *             schema:
+ *                message:client created succesfully
  *               $ref: '#/components/schemas/Client'
  */
 router.post('/', createClient)

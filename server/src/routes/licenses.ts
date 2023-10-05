@@ -162,6 +162,7 @@ router.post('/send-email/all', sendAllEmails)
  *         content:
  *           application/json:
  *             schema:
+ *               message:License created succesfully
  *               $ref: '#/components/schemas/License'
  */
 router.post('/', createLicense)
@@ -193,7 +194,6 @@ router.post('/', createLicense)
  *         content:
  *           application/json:
  *             schema:
- *               message:License creates succesfully
  *               $ref: '#/components/schemas/License'
  */
 router.put('/:id', editLicense)

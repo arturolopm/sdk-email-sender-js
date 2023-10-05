@@ -79,6 +79,7 @@ router.get('/:id', getOneUser)
  *         content:
  *           application/json:
  *             schema:
+ *               message:License created succesfully
  *               $ref: '#/components/schemas/User'
  */
 router.post('/', createUser)
