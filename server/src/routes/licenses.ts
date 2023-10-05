@@ -193,6 +193,7 @@ router.post('/', createLicense)
  *         content:
  *           application/json:
  *             schema:
+ *               message:License creates succesfully
  *               $ref: '#/components/schemas/License'
  */
 router.put('/:id', editLicense)
